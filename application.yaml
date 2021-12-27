@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://gitlab.com/nanuchi/argocd-app-config.git
+    targetRevision: HEAD # points at the last commit
+    path: dev
+  destination: 
+    server: https://kubernetes.default.svc 
+# argocd deployed in the destination cluster, so we can access this internal svc
+    namespace: myapp
+    # if not exist argo will create it.(syncPolicy, by defalut set to 'false')
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true 
+# argo will overwrite changes made manually and add them to the state instead
+      prune: true
+# delete resources that we want to remove, by defalut argo doesn't do that.
