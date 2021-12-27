@@ -13,7 +13,7 @@ spec:
   destination: 
     server: https://kubernetes.default.svc 
 # argocd deployed in the destination cluster, so we can access this internal svc
-    namespace: myapp
+    namespace: default
     # if not exist argo will create it.(syncPolicy, by defalut set to 'false')
 
   syncPolicy:
